@@ -1,7 +1,7 @@
 export default async function handler(req, res) {
   try {
 
-    const USD_TO_PKR = 280; // approximate
+    const USD_TO_PKR = Number(process.env.USD_TO_PKR); // approximate PKR rate stored in Environment Variables
     
     // Fetch GOLD
     const goldResponse = await fetch("https://www.goldapi.io/api/XAU/USD", {
