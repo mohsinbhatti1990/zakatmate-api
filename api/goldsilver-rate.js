@@ -23,6 +23,8 @@ export default async function handler(req, res) {
     res.status(200).json({
       gold_per_gram: goldData.price_gram_24k,
       silver_per_gram: silverData.price_gram_999,
+      currency: "PKR",
+      source: "goldapi.io",
       last_updated: new Date().toISOString()
     });
 
