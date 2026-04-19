@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 
     const silverData = await silverResponse.json();
 
-    res.setHeader("Cache-Control", "s-maxage=86400"); // 1 day cache
+    res.setHeader("Cache-Control", "s-maxage=86400"); // 1 day cache for Zakat Mate
 
     res.status(200).json({
       gold_per_gram: goldData.price_gram_24k,
