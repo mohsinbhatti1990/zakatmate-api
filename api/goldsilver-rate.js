@@ -1,7 +1,10 @@
 export default async function handler(req, res) {
   try {
+
+    const USD_TO_PKR = 280; // approximate
+    
     // Fetch GOLD
-    const goldResponse = await fetch("https://www.goldapi.io/api/XAU/PKR", {
+    const goldResponse = await fetch("https://www.goldapi.io/api/XAU/USD", {
       headers: {
         "x-access-token": process.env.GOLD_API_KEY
       }
@@ -10,7 +13,7 @@ export default async function handler(req, res) {
     const goldData = await goldResponse.json();
 
     // Fetch SILVER
-    const silverResponse = await fetch("https://www.goldapi.io/api/XAG/PKR", {
+    const silverResponse = await fetch("https://www.goldapi.io/api/XAG/USD", {
       headers: {
         "x-access-token": process.env.GOLD_API_KEY
       }
@@ -21,8 +24,10 @@ export default async function handler(req, res) {
     res.setHeader("Cache-Control", "s-maxage=86400"); // 1 day cache for Zakat Mate
 
     res.status(200).json({
-      gold_per_gram: goldData.price_gram_24k,
-      silver_per_gram: silverData.price_gram_999,
+      gold_per_gram: goldData.price_gram_24k * USD_TO_PKR, // Gold Rate in PKR
+      silver_per_gram: silverData.price_gram_999 * USD_TO_PKR, // Silver Rate in PKR
+      // gold_per_gram: goldData.price_gram_24k,
+      // silver_per_gram: silverData.price_gram_999,
       currency: "PKR",
       source: "goldapi.io",
       last_updated: new Date().toISOString()
