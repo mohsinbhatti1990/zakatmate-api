@@ -25,7 +25,12 @@ export default async function handler(req, res) {
 
     res.status(200).json({
       gold_per_gram: goldData.price_gram_24k * USD_TO_PKR, // Gold Rate in PKR
-      silver_per_gram: silverData.price_gram_999 * USD_TO_PKR, // Silver Rate in PKR
+      silver_per_gram: (
+          silverData.price_gram_999 
+          ? silverData.price_gram_999 
+          : (silverData.price / 31.1035)
+          ) * USD_TO_PKR,
+      // silver_per_gram: silverData.price_gram_999 * USD_TO_PKR, // Silver Rate in PKR
       // gold_per_gram: goldData.price_gram_24k,
       // silver_per_gram: silverData.price_gram_999,
       currency: "PKR",
