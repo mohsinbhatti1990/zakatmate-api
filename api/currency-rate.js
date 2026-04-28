@@ -1,4 +1,9 @@
-import config from '../config/currency-config.json' assert { type: 'json' };
+// import config from '../config/currency-config.json' assert { type: 'json' };
+import fs from 'fs';
+import path from 'path';
+
+const configPath = path.join(process.cwd(), 'config/currency-config.json');
+const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
 
 export default async function handler(req, res) {
   try {
