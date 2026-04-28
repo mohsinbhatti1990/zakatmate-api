@@ -1,10 +1,15 @@
-import config from '../config/config.json' assert { type: 'json' };
+import config from '../config/currency-config.json' assert { type: 'json' };
 
 export default async function handler(req, res) {
   try {
     const url = `${config.exchangeRateApi.baseUrl}/${process.env.API_KEY}${config.exchangeRateApi.endpoint}/${config.exchangeRateApi.baseCurrency}`;
 
-    const response = await fetch(url);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), config.defaults.timeoutMs || 5000);
+
+    const response = await fetch(url, { signal: controller.signal });
+    clearTimeout(timeout);
+
     const data = await response.json();
 
     if (
@@ -14,14 +19,19 @@ export default async function handler(req, res) {
       throw new Error("API failed");
     }
 
-    const rates =
-      data[config.exchangeRateApi.responseMapping.ratesKey];
+    const rates = data[config.exchangeRateApi.responseMapping.ratesKey];
+
+    if (!rates) {
+      throw new Error("Rates not found in API response");
+    }
 
     const result = {};
 
     Object.keys(config.supportedCurrencies).forEach((code) => {
       result[code] = {
-        rate: code === "USD" ? 1 : rates[code],
+        rate: code === "USD"
+          ? 1
+          : rates[code] ?? (code === "PKR" ? config.defaults.fallbackUsdToPkr : null),
         name: config.supportedCurrencies[code].name,
         symbol: config.supportedCurrencies[code].symbol
       };
@@ -37,7 +47,8 @@ export default async function handler(req, res) {
 
   } catch (error) {
     res.status(500).json({
-      error: "Failed to fetch exchange rates"
+      error: "Failed to fetch exchange rates",
+      message: error.message
     });
   }
 }
