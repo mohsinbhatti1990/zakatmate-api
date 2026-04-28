@@ -2,7 +2,7 @@ import config from '../config/currency-config.json' assert { type: 'json' };
 
 export default async function handler(req, res) {
   try {
-    const url = `${config.exchangeRateApi.baseUrl}/${process.env.API_KEY}${config.exchangeRateApi.endpoint}/${config.exchangeRateApi.baseCurrency}`;
+    const url = `${config.exchangeRateApi.baseUrl}/${process.env.CURRENCY_API_KEY}${config.exchangeRateApi.endpoint}/${config.exchangeRateApi.baseCurrency}`;
 
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), config.defaults.timeoutMs || 5000);
