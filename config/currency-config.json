@@ -1,0 +1,31 @@
+{
+  "app": {
+    "name": "ZakatMate",
+    "version": "1.0.6"
+  },
+  "exchangeRateApi": {
+    "baseUrl": "https://v6.exchangerate-api.com/v6",
+    "endpoint": "/latest",
+    "baseCurrency": "USD",
+    "responseMapping": {
+      "ratesKey": "conversion_rates",
+      "successKey": "result",
+      "successValue": "success"
+    }
+  },
+  "supportedCurrencies": {
+    "PKR": { "name": "Pakistani Rupee", "symbol": "Rs." },
+    "USD": { "name": "US Dollar", "symbol": "$" },
+    "AED": { "name": "UAE Dirham", "symbol": "AED" },
+    "SAR": { "name": "Saudi Riyal", "symbol": "SAR" },
+    "EUR": { "name": "Euro", "symbol": "EUR" },
+    "GBP": { "name": "British Pound", "symbol": "GBP" }
+  },
+  "cache": {
+    "durationHours": 24,
+    "enabled": true
+  },
+  "defaults": {
+    "fallbackUsdToPkr": 280
+  }
+}
