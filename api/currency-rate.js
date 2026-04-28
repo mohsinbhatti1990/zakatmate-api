@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     clearTimeout(timeout);
 
     const data = await response.json();
-
+ 
     if (
       data[config.exchangeRateApi.responseMapping.successKey] !==
       config.exchangeRateApi.responseMapping.successValue
